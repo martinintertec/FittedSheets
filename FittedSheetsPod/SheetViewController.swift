@@ -354,15 +354,11 @@ public class SheetViewController: UIViewController {
             }, completion: nil)
         } else if gesture.state == .ended {
             let velocity = (0.2 * gesture.velocity(in: self.view).y)
-            var finalHeight = newHeight - offset - velocity
-            if velocity > 500 {
-                // They swiped hard, always just close the sheet when they do
-                finalHeight = -1
-            }
+            let finalHeight: CGFloat = -1
             
             let animationDuration = TimeInterval(abs(velocity*0.0002) + 0.2)
             
-            guard finalHeight >= (minHeight / 2) || !dismissOnPan else {
+            if dismissOnPan {
                 // Dismiss
                 UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
                     self?.containerView.transform = CGAffineTransform(translationX: 0, y: self?.containerView.frame.height ?? 0)
